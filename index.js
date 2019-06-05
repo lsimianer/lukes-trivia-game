@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 // create event listeners
-$("#remaining-time").hide();
+$("#remaining-time").show();
   $("#start").on('click', trivia.startGame);
   $(document).on('click' , '.option', trivia.guessChecker);
   
@@ -59,6 +59,7 @@ var trivia = {
         $('#start').hide();
 
         $('#remaining-time').show();
+        console.log('time show');
 //ask 1st q after start pressed
         trivia.nextQuestion();
     },
@@ -87,6 +88,9 @@ var trivia = {
             $('#options').append($('<button class="option btn-s">'+key+'</button>'));
         })
 
+        $('#timer').css("background-color","transparent");
+        console.log("next-q-ran, color rest tmr??");
+
     },
 
     timerRunning : function(){
@@ -95,7 +99,8 @@ var trivia = {
             $('#timer').text(trivia.timer);
             trivia.timer--;
                 if(trivia.timer === 4){
-                    $('#timer').addClass('last-seconds');
+                    $('#timer').css("background-color","red","duration", "2s"); //duration add did not work.. needs animation but that affects the transition time...
+                    
                 }
         }
     
@@ -104,7 +109,7 @@ var trivia = {
             trivia.unanswered++;
             trivia.result = false;
             clearInterval(trivia.timerId);
-            resultId = setTimeout(trivia.guessResult, 1000);
+            resultId = setTimeout(trivia.guessResult, 3000);
             $('#results').html('<h3>Out of time! The answer is '+Object.values(trivia.answers)[trivia.currentSet] +'</h3>');
         }
 
@@ -175,5 +180,4 @@ var trivia = {
 
         trivia.nextQuestion();
     }
-
 }
