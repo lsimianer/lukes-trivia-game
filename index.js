@@ -69,9 +69,97 @@ var trivia = {
         trivia.timer = 10;
         $('#timer').removeClass('last-seconds');
         $('#timer').text(trivia.timer);
+
+        //prevent timer speed up
+        if(!trivia.timerOn){
+            trivia.timerID = setInterval(trivia.timerRunning,1000);
+        }
+
+        // make fx to get all questions then index current one
+        var questionContent = Object.values(trivia.questions)[trivia.currentSet];
+        $('#question').text(questionContent);
+
+        // an array of all the options for current q
+        var questionOptions = Object.values(trivia.options)[trivia.currentSet];
+
+        //populate all the guess options in the html
+        $.each(questionOptions, function(index,key){
+            $('#options').append($('<button class="option btn-s">' +key+'</button>'));
+        })
+
+    },
+
+    timerRunning : function(){
+        // if timer still has time and questions are left
+        if(trivia.timer > -1 && trivia.currentSet < Object.keys(trivia.questions).length){
+            $('#timer').text(trivia.timer);
+            trivia.timer --;
+                if(trivia.timer === 4){
+                    $('#timer').addClass('last-seconds');
+                }
+        }
+    
+        //if time is =0 and q is unanswered run the result as a loss
+        else if(trivia.timer === -1){
+            trivia.unanswered++;
+            trivia.result = false;
+            clearInterval(trivia.timerId);
+            resultID = setTimeout(trivia.guessResult, 1000);
+            $('#results').html('<h3>Out of time! The answer is' +Object.values(trivia.answers)[trivia.currentSet] +'</h3>');
+        }
+
+        // show result upon all q's being answered
+        else if(trivia.currentSet === Object.keys(trivia.questions).length){
+
+            // add results to their respective html elements
+            $('#results')
+                .html('<h3>Thanks for playing! Lets see how dog-smart you are!</h3>'+
+                '<p>Correct: '+ trivia.correct +'</p>'+
+                '<p>Incorrect: '+ trivia.incorrect +'</p>'+
+                '<p>Unaswered: '+ trivia.unanswered +'</p>'+
+                '<p>Test your memory, try again!</p>');
+
+        //hide game section
+            $('#game').hide();
+
+            // display a start button.... I tried this at the beginning and it failed. so upon research, i put it here.
+            $('#start').show();
+
+        }       
+    },
+
+    // function to check the answer picked
+    guessChecker : function(){
+        // the timer id for gameResult and to setTimeout
+        var resultID;
+
+        // answer to current q from array
+        var currentAnswer = object.values(trivia.answers)[trivia.currentSet];
+
+        // if the option picked matches the answer add to correct
+
+        if($(this).text()=== currentAnswer){
+            // style btn green if correct
+            $(this).addClass('btn-success').removeClass('btn-info');
+
+            trivia.correct++;
+            clearInterval(trivia.timerID);
+            resultID = setTimeout(trivia.guessResult,1000);
+            $('#results').html('<h3>You, are surpririsngly, right... dont judge a book by its cover I guess!</h3>');
+        }
+            // now for the incorrect options
+        else{
+            $(this).addClass('btn-danger')
+
+            /// i dont wanna use bootstrap, shits wack. add class or style via css
+        }
+
     }
 
-        
 
-    
+
+
+
+
+
 }
