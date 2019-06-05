@@ -63,7 +63,7 @@ var trivia = {
         trivia.nextQuestion();
     },
     // loop and display q's
-    nextQuestion :function(){
+    nextQuestion : function(){
 
         //set timer to answer
         trivia.timer = 10;
@@ -72,7 +72,7 @@ var trivia = {
 
         //prevent timer speed up
         if(!trivia.timerOn){
-            trivia.timerID = setInterval(trivia.timerRunning,1000);
+            trivia.timerId = setInterval(trivia.timerRunning,1500);
         }
 
         // make fx to get all questions then index current one
@@ -83,8 +83,8 @@ var trivia = {
         var questionOptions = Object.values(trivia.options)[trivia.currentSet];
 
         //populate all the guess options in the html
-        $.each(questionOptions, function(index,key){
-            $('#options').append($('<button class="option btn-s">' +key+'</button>'));
+        $.each(questionOptions, function(index, key){
+            $('#options').append($('<button class="option btn-s">'+key+'</button>'));
         })
 
     },
@@ -93,7 +93,7 @@ var trivia = {
         // if timer still has time and questions are left
         if(trivia.timer > -1 && trivia.currentSet < Object.keys(trivia.questions).length){
             $('#timer').text(trivia.timer);
-            trivia.timer --;
+            trivia.timer--;
                 if(trivia.timer === 4){
                     $('#timer').addClass('last-seconds');
                 }
@@ -104,8 +104,8 @@ var trivia = {
             trivia.unanswered++;
             trivia.result = false;
             clearInterval(trivia.timerId);
-            resultID = setTimeout(trivia.guessResult, 1000);
-            $('#results').html('<h3>Out of time! The answer is' +Object.values(trivia.answers)[trivia.currentSet] +'</h3>');
+            resultId = setTimeout(trivia.guessResult, 1000);
+            $('#results').html('<h3>Out of time! The answer is '+Object.values(trivia.answers)[trivia.currentSet] +'</h3>');
         }
 
         // show result upon all q's being answered
@@ -129,37 +129,51 @@ var trivia = {
     },
 
     // function to check the answer picked
-    guessChecker : function(){
+    guessChecker : function() {
         // the timer id for gameResult and to setTimeout
-        var resultID;
+        var resultId;
 
         // answer to current q from array
-        var currentAnswer = object.values(trivia.answers)[trivia.currentSet];
+        var currentAnswer = Object.values(trivia.answers)[trivia.currentSet];
 
         // if the option picked matches the answer add to correct
 
-        if($(this).text()=== currentAnswer){
+        if($(this).text() === currentAnswer){
             // style btn green if correct
-            $(this).addClass('btn-success').removeClass('btn-info');
+            $(this).css("background-color","green");
 
             trivia.correct++;
-            clearInterval(trivia.timerID);
-            resultID = setTimeout(trivia.guessResult,1000);
+            clearInterval(trivia.timerId);
+            resultId = setTimeout(trivia.guessResult, 3000);
             $('#results').html('<h3>You, are surpririsngly, right... dont judge a book by its cover I guess!</h3>');
+            console.log("right")
         }
             // now for the incorrect options
         else{
-            $(this).addClass('btn-danger')
-
-            /// i dont wanna use bootstrap, shits wack. add class or style via css
+            $(this).css("background-color", "red");
+         /// i dont wanna use bootstrap, shits wack. add class or style via css
+            
+         trivia.incorrect++;
+         clearInterval(trivia.timerId);
+         resultId = setTimeout(trivia.guessResult, 3000);
+         $('#results').html('<h3>You\'re better than this!! The answer is: '+ currentAnswer +'</h3>');
+        
+         console.log("wrong");
         }
+        
+    },
 
+    // fx to rm previous question 
+    guessResult : function(){
+
+        //incremnt to next q set
+        trivia.currentSet++;
+
+        $('.option').remove();
+        $('#results h3').remove();
+        console.log("remove ops & #rslts");
+
+        trivia.nextQuestion();
     }
-
-
-
-
-
-
 
 }
