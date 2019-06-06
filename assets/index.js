@@ -7,6 +7,8 @@ $("#remaining-time").show();
   
 })
 
+
+
 // create a var for trivia
 var trivia = {
     //trivia properties
@@ -41,6 +43,16 @@ var trivia = {
         q4:'African Wild Dogs',
         q5:'no'
     },
+    // answerpic:{
+    //     q1:'Neapolitan mastiff',
+    //     q2:'Avocado',
+    //     q3:'Chihuahua',
+    //     q4:'African Wild Dogs',
+    //     q5:'no'
+
+    // }   // so instead of making an array and a fx, why not create a div for each image and write a shorter fx
+    // a shorter fx that changes the default css of "hide" to show for the respective div. css sizing and all. simple, efficiaent
+    //less javascript clutter
 
     //initialize the game and establish methods of play
     startGame: function(){
@@ -48,6 +60,7 @@ var trivia = {
         trivia.correct =0;
         trivia.incorrect =0;
         trivia.unanswered =0;
+        ca =0;
         clearInterval(trivia.timerId);
         //show game div
         $('#game').show();
@@ -133,14 +146,32 @@ var trivia = {
         }       
     },
 
+    // picky : function(){
+    //     if(trivia.answers.index === 0){
+    //         $('mastiff').css("visibilty", "show");
+    //         console.log("mastiff");
+    //     }
+    // },
+    // no slideshow today...
+
     // function to check the answer picked
     guessChecker : function() {
         // the timer id for gameResult and to setTimeout
         var resultId;
 
         // answer to current q from array
+        // var ca = ca;
         var currentAnswer = Object.values(trivia.answers)[trivia.currentSet];
+        // ca++;
+        // console.log(ca);
 
+        // pictrig : function(currentAnswer) {
+        //     if(currentAnswer.ca === 1){
+        //         $('mastiff').css("visibilty", "show");
+        //     }   
+        // }
+        // if answers[1]
+        // pictrig(currentAnswer);
         // if the option picked matches the answer add to correct
 
         if($(this).text() === currentAnswer){
@@ -165,8 +196,12 @@ var trivia = {
         
          console.log("wrong");
         }
+
+        
         
     },
+
+    // picky();
 
     // fx to rm previous question 
     guessResult : function(){

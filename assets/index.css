@@ -85,5 +85,41 @@ a:hover{
     text-align: center;
     overflow: hidden;
     border-radius: 7px;
-    margin-top: 6.38rem;
+    margin-top: 0.38rem;
+}
+
+#pics {
+    margin-left: -3%;
+}
+
+img{
+    height: 200px;
+    width: 200px;
+    margin-top: 3%;
+}
+
+#mastiff{
+    visibility: hidden;
+}
+
+#avocado{
+    visibility: hidden;
+}
+
+#yippy {
+    visibility: hidden;
+}
+
+#adog {
+    visibility: hidden;
+    border: 6px;
+    border-style: groove;
+    border-color: black;
+}
+
+#hyena {
+    border: 5px;
+    border-color: black;
+    visibility: hidden;
+    
 }
